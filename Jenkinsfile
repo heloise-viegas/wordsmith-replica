@@ -11,10 +11,6 @@ pipeline {
         {
             steps{
                 cleanWs()
-               # git(
-               #     url:"https://github.com/heloise-viegas/wordsmith-replica.git",
-               #     branch:"main"
-               #     )
             }
         }
         
@@ -47,9 +43,7 @@ pipeline {
                     rm api.yaml
                     mv test.yaml api.yaml
                     
-                  #  git add api.yaml
-                  #  git commit -m "Update app image tag to ${BUILD_NUMBER}"
-                  #  git push origin main
+                 
                     
                 """
           }  
