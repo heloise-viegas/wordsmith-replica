@@ -40,8 +40,8 @@ pipeline {
                     
                     export IMAGE_TAG=$IMAGE_TAG
                     envsubst  < web.yaml > testweb.yaml
-                    rm api.yaml
-                    mv testweb.yaml api.yaml
+                    rm web.yaml
+                    mv testweb.yaml web.yaml
                     
                  
                     
