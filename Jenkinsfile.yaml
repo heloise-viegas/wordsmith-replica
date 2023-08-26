@@ -11,10 +11,10 @@ pipeline {
         {
             steps{
                 cleanWs()
-                git(
-                    url:"https://github.com/heloise-viegas/wordsmith-replica.git",
-                    branch:"main"
-                    )
+               # git(
+               #     url:"https://github.com/heloise-viegas/wordsmith-replica.git",
+               #     branch:"main"
+               #     )
             }
         }
         
