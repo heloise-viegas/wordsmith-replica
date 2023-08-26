@@ -1,0 +1,76 @@
+pipeline {
+    agent any
+    environment
+    {
+     DOCKERHUB_CREDENTIALS = credentials('Dockerhub')
+     IMAGE_TAG = '$BUILD_NUMBER'
+    }
+    stages {
+        
+        stage('Clone')
+        {
+            steps{
+                cleanWs()
+            }
+        }
+        
+        stage('Build') {
+      steps {
+          dir('/home/heloise/.jenkins/workspace/wordsmith/api')
+          {
+              sh 'pwd'
+              sh 'docker build -t heloise1/wordsmithapi:$BUILD_NUMBER .'
+          }
+      }
+    }
+    stage('Login') {
+      steps {
+        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+      }
+    }
+    stage('Push') {
+      steps {
+        sh 'docker push heloise1/wordsmithapi:$BUILD_NUMBER'
+      }
+        post {
+          success{
+              sh """
+                    git clone https://github.com/heloise-viegas/wordsmith-kubernetes-files.git
+                    cd ./wordsmith-kubernetes-files/k8s-manifests
+                    
+                    export IMAGE_TAG=$IMAGE_TAG
+                    envsubst  < api.yaml > test.yaml
+                    rm api.yaml
+                    mv test.yaml api.yaml
+                    
+                 
+                    
+                """
+          }  
+            
+    always {
+      sh 'docker rmi heloise1/wordsmithapi:$BUILD_NUMBER'
+      sh 'docker logout'
+    }
+  }
+    }
+  
+        
+        
+        stage('Connect to Minikube from Jenkins') {
+            steps {
+               withKubeConfig(caCertificate: '', clusterName: 'minikube', contextName: 'minikube', credentialsId: 'Minikube23Aug23', namespace: 'default', restrictKubeConfigAccess: false, serverUrl: 'https://127.0.0.1:32769') 
+               {
+                   echo "----------------------"
+                   sh 'kubectl get all'
+               }
+            }
+			post
+			{
+			    always{
+				echo "Success"
+			    }
+			}
+        }
+    }
+}
