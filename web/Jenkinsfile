@@ -16,10 +16,10 @@ pipeline {
         
         stage('Build') {
       steps {
-          dir('/home/heloise/.jenkins/workspace/wordsmith/api')
+          dir('/home/heloise/.jenkins/workspace/wordsmith/web')
           {
               sh 'pwd'
-              sh 'docker build -t heloise1/wordsmithapi:$BUILD_NUMBER .'
+              sh 'docker build -t heloise1/wordsmithweb:$BUILD_NUMBER .'
           }
       }
     }
@@ -30,7 +30,7 @@ pipeline {
     }
     stage('Push') {
       steps {
-        sh 'docker push heloise1/wordsmithapi:$BUILD_NUMBER'
+        sh 'docker push heloise1/wordsmithweb:$BUILD_NUMBER'
       }
         post {
           success{
@@ -39,9 +39,9 @@ pipeline {
                     cd ./wordsmith-kubernetes-files/k8s-manifests
                     
                     export IMAGE_TAG=$IMAGE_TAG
-                    envsubst  < api.yaml > test.yaml
+                    envsubst  < web.yaml > testweb.yaml
                     rm api.yaml
-                    mv test.yaml api.yaml
+                    mv testweb.yaml api.yaml
                     
                  
                     
@@ -49,7 +49,7 @@ pipeline {
           }  
             
     always {
-      sh 'docker rmi heloise1/wordsmithapi:$BUILD_NUMBER'
+      sh 'docker rmi heloise1/wordsmithweb:$BUILD_NUMBER'
       sh 'docker logout'
     }
   }
