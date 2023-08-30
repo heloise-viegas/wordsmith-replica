@@ -8,6 +8,10 @@ RUN mvn verify -DskipTests --fail-never
 COPY src ./src
 RUN mvn verify
 
+# Test stage
+FROM build as test
+CMD ["./mvnw", "javac"]
+
 # Run stage
 FROM --platform=${TARGETPLATFORM} amazoncorretto:17
 WORKDIR /app
