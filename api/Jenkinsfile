@@ -13,7 +13,19 @@ pipeline {
                 cleanWs()
             }
         }
-        
+
+
+  stage('Test') {
+      steps {
+          dir('/home/heloise/.jenkins/workspace/wordsmith/api')
+          {
+              sh 'pwd'
+              sh 'docker build -t heloise1/wordsmithapi:$BUILD_NUMBER  --target test .'
+		sh 'docker run -it --rm --name wordsmithtest heloise1/wordsmithapi:$BUILD_NUMBER'
+          }
+      }
+    }
+	    
         stage('Build') {
       steps {
           dir('/home/heloise/.jenkins/workspace/wordsmith/api')
