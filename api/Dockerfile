@@ -10,7 +10,7 @@ RUN mvn verify
 
 # Test stage
 FROM build as test
-CMD ["./mvnw", "test"]
+RUN ["./mvnw", "test"]
 
 # Run stage
 FROM --platform=${TARGETPLATFORM} amazoncorretto:17
