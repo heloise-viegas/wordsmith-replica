@@ -52,8 +52,8 @@ pipeline {
                     cd ./wordsmith-kubernetes-files/k8s-manifests
                     
                     export IMAGE_TAG=$BUILD_NUMBER
-                    envsubst  < api.yaml > test.yaml
-                 
+                   
+                    cat api.yaml | envsubst > test.yaml
                     
                  
                     
