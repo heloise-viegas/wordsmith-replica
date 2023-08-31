@@ -21,7 +21,7 @@ pipeline {
           {
               sh 'pwd'
               sh 'docker build --target build . -t heloise1/wordsmithapi:$BUILD_NUMBER'
-	      sh 'id=$(docker create nodetest)'
+	      sh 'id=$(docker create heloise1/wordsmithapi:$BUILD_NUMBER)'
 	      sh 'echo $id'
           }
       }
