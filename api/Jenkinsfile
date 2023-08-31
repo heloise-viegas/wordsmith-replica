@@ -20,8 +20,9 @@ pipeline {
           dir('/home/heloise/.jenkins/workspace/wordsmith/api')
           {
               sh 'pwd'
-              sh 'docker build  --target test -t heloise1/wordsmithapi:$BUILD_NUMBER  .'
-		sh 'docker run -it --rm --name wordsmithtest heloise1/wordsmithapi:$BUILD_NUMBER'
+              sh 'docker build --target build . -t heloise1/wordsmithapi:$BUILD_NUMBER'
+	      sh 'id=$(docker create nodetest)'
+	      sh 'echo $id'
           }
       }
     }
