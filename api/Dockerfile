@@ -6,9 +6,10 @@ COPY pom.xml .
 RUN mvn verify -DskipTests --fail-never
 
 COPY src ./src
+RUN mvn test
 RUN mvn verify
 
-RUN mvn test
+
 
 # Run stage
 FROM --platform=${TARGETPLATFORM} amazoncorretto:17
