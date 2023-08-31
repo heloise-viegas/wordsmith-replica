@@ -4,7 +4,7 @@ WORKDIR /home/lab
 
 COPY pom.xml .
 RUN mvn test
-RUN mvn verify -DskipTests --fail-never
+#RUN mvn verify -DskipTests --fail-never
 
 COPY src ./src
 
