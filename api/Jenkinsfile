@@ -51,7 +51,7 @@ pipeline {
                     git clone https://github.com/heloise-viegas/wordsmith-kubernetes-files.git
                     cd ./wordsmith-kubernetes-files/k8s-manifests
                     
-                    export IMAGE_TAG=$IMAGE_TAG
+                    export IMAGE_TAG=$BUILD_NUMBER
                     envsubst  < api.yaml > test.yaml
                  
                     
