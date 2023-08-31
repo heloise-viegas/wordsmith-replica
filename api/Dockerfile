@@ -9,7 +9,7 @@ COPY src ./src
 RUN mvn verify
 
 # Test stage
-FROM build as test
+#FROM build as test
 RUN ["./mvnw", "test"]
 
 # Run stage
