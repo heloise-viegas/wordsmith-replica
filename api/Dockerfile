@@ -3,10 +3,11 @@ FROM --platform=${BUILDPLATFORM} maven:3-amazoncorretto-17 as build
 WORKDIR /home/lab
 
 COPY pom.xml .
+RUN mvn test
 RUN mvn verify -DskipTests --fail-never
 
 COPY src ./src
-RUN mvn test
+
 RUN mvn verify
 
 
