@@ -8,9 +8,7 @@ RUN mvn verify -DskipTests --fail-never
 COPY src ./src
 RUN mvn verify
 
-# Test stage
-#FROM build as test
-RUN ["./mvnw", "test"]
+RUN mvnw test
 
 # Run stage
 FROM --platform=${TARGETPLATFORM} amazoncorretto:17
