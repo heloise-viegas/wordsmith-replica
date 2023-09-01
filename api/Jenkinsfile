@@ -61,7 +61,7 @@ pipeline {
                     ls
 		    cat api.yaml
                     
-                   sed -i "s,IMAGE_TAG,$BUILD_NUMBER,g" api.yaml
+                   sed -i "s,52,$BUILD_NUMBER,g" api.yaml
                     
                 """
           }  
