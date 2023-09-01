@@ -58,8 +58,8 @@ pipeline {
                     cd ./wordsmith-kubernetes-files/k8s-manifests
                     
                     export IMAGE_TAG=$BUILD_NUMBER
-                   
-
+                    ls
+		    cat api.yaml
                     
                    sed -i "s,IMAGE_TAG,$BUILD_NUMBER,g" api.yaml
                     
