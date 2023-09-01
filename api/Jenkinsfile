@@ -59,9 +59,9 @@ pipeline {
                     
                     export IMAGE_TAG=$BUILD_NUMBER
                    
-                    cat api.yaml | envsubst > test.yaml
+
                     
-                 sed -i "s,IMAGE_TAG,$BUILD_NUMBER," api.yaml
+                   sed -i "s,IMAGE_TAG,$BUILD_NUMBER," api.yaml
                     
                 """
           }  
