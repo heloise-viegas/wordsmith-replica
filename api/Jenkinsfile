@@ -60,7 +60,7 @@ pipeline {
                     export IMAGE_TAG=$BUILD_NUMBER
                     ls
 		    cat api.yaml
-                    sed -i "s,52,$BUILD_NUMBER,g" api.yaml
+                    sed -i "s,52,$IMAGE_TAG,g" api.yaml
                     
                 """
           }  
