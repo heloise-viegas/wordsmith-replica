@@ -61,7 +61,7 @@ pipeline {
                      IFS=: read -r var3 var4 <<< $var2
 		     echo $tag
                      echo $var2
-		     sed -i "s/\(image: .*:\)$var4/\1$BUILD_NUMBER/" api.yaml
+		    
                    cat api.yaml
                     
                 """
