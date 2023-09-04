@@ -58,7 +58,7 @@ pipeline {
                     cd ./wordsmith-kubernetes-files/k8s-manifests
 	            tag=\$(cat api.yaml | grep "image")
 	            echo \$tag
-	            var1=cat \$tag | cut -d ':' -f 2
+	            var1=cat \$tag | cut -d ':' -f 1
 	     	    echo \$var1
 		  
                     
