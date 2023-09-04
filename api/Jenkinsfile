@@ -56,10 +56,11 @@ pipeline {
               sh """
                     git clone https://github.com/heloise-viegas/wordsmith-kubernetes-files.git
                     cd ./wordsmith-kubernetes-files/k8s-manifests
-	            tag="\$(cat api.yaml | grep "image")"
-		     IFS=/ read -r var1 var2 <<< $tag
+	            tag=$(cat api.yaml | grep "image")
+	      echo \$tag
+		     IFS=/ read -r var1 var2 <<< \$tag
                      IFS=: read -r var3 var4 <<< $var2
-		     echo $tag
+		    
                      echo $var2
 		     sed -i "s/\(image: .*:\)$var4/\1$BUILD_NUMBER/" api.yaml
                    cat api.yaml
