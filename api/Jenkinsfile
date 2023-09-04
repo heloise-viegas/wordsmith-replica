@@ -59,7 +59,7 @@ pipeline {
 	            tag=\$(cat api.yaml | grep "image")
 	            echo \$tag
 	            var1=echo \$tag | cut -d ':' -f 3
-
+	     	    echo \$var1
 		  
                     
                 """
