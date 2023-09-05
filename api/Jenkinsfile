@@ -58,7 +58,7 @@ pipeline {
                     cd ./wordsmith-kubernetes-files/k8s-manifests
 	            tag=\$(cat api.yaml | grep "image")
 	            echo \$tag
-	            IFS=/ read -r var1 var2 <<< \$tag
+                   var1= echo \$tag | awk -F 'wordsmithapi:' '{print $2}'
 	     	    echo \$var1
 		  
                     
