@@ -51,8 +51,9 @@ pipeline {
 	 
 		         def delimiter = 'wordsmithapi:'
 		         def var = """echo '${tag}' | awk -F '${delimiter}' '{print \$2}'"""
+				 def processedContent = sh(script: var, returnStdout: true).trim()
                          echo "The value of myVariable is: ${tag}"
-		         echo "The value of myVariable is: ${var}"
+		         echo "The value of processedContent is: ${processedContent}"
 		         tag = tag.replace("image", "Hi")
 			 }
                 }
