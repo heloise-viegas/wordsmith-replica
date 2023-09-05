@@ -46,7 +46,7 @@ pipeline {
                     
                """
 		 script {
-			 dir('./wordsmith-kubernetes-files/k8s-manifestsy') {
+			 dir('./wordsmith-kubernetes-files/k8s-manifests') {
                     def myVariable = sh(script: 'cat api.yaml | grep "image"', returnStdout: true).trim()
 				 
                    myVariable = myVariable.replace("image", "Hi")
