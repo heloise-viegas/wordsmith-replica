@@ -39,12 +39,18 @@ pipeline {
 	            echo \$tag
                     var=\$(echo \$tag | awk -F 'wordsmithapi:' '{print \$2}')
 	     	    echo \$var
-	           echo sed -i 's/\"$var"/$BUILD_NUMBER/g' api.yaml
+	           echo sed -i 's/\$var/$BUILD_NUMBER/g' api.yaml
 	           
 	    
 		    cat api.yaml | grep "image"
                     
                """
+		 script {
+                    def myVariable = "Hello, World!"
+                   myVariable = myVariable.replace("Hello", "Hi")
+                    echo "The value of myVariable is: ${myVariable}"
+
+                }
           }  
             
    
