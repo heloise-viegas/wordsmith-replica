@@ -55,14 +55,14 @@ pipeline {
 		         echo "The value of processedContent is: ${processedContent}"
 		         processedContent = processedContent.replace(processedContent, "Hi")
 			echo "The value of new processedContent is: ${processedContent}"
-
-				 def fileContent = readFile(api.yaml).trim()
+			 def filePath = './api.yaml'
+				 def fileContent = readFile(filePath).trim()
 
                     // Replace the old value with the new value
                     def updatedContent = fileContent.replace(processedContent, "newVal")
 
                     // Write the updated content back to the file
-                    writeFile(file: api.yaml, text: updatedContent)
+                    writeFile(file: filePath, text: updatedContent)
 				 
 			 }
                 }
