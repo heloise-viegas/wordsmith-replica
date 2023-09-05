@@ -40,7 +40,7 @@ pipeline {
                     var= echo \$tag | awk -F 'wordsmithapi:' '{print \$2}'
 	     	    echo \$var
 	           echo sed -i "s/${var}/$BUILD_NUMBER/g" api.yaml
-	
+	           echo sed -i 's|"\${var}"|$BUILD_NUMBER|g' api.yaml
 	    
 		    cat api.yaml | grep "image"
                     
