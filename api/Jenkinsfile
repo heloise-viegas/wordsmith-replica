@@ -48,7 +48,9 @@ pipeline {
 		 script {
 			 dir('./wordsmith-kubernetes-files/k8s-manifests') {
                          def tag = sh(script: 'cat api.yaml | grep "image"', returnStdout: true).trim()
-			 def var = sh(script: 'echo ${tag} | awk -F "wordsmithapi:" '{print \$2}'', returnStdout: true).trim()	 
+	 
+		         def delimiter = 'wordsmithapi:'
+		         def var = """echo '${tag}' | awk -F '${delimiter}' '{print \$2}'"""
                          echo "The value of myVariable is: ${tag}"
 		         echo "The value of myVariable is: ${var}"
 		         tag = tag.replace("image", "Hi")
