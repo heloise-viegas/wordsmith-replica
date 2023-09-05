@@ -46,8 +46,8 @@ pipeline {
                     
                """
 		 script {
-			 dir('./wordsmith-kubernetes-files/k8s-manifests') {
-                         def tag = sh(script: 'cat api.yaml | grep "image"', returnStdout: true).trim()
+			 
+                         def tag = sh(script: 'cat ./wordsmith-kubernetes-files/k8s-manifests/api.yaml | grep "image"', returnStdout: true).trim()
 	                 def delimiter = 'wordsmithapi:'
 		         def var = """echo '${tag}' | awk -F '${delimiter}' '{print \$2}'"""
 			 def processedContent = sh(script: var, returnStdout: true).trim()
@@ -55,7 +55,7 @@ pipeline {
 		         echo "The value of processedContent is: ${processedContent}"
 		         processedContent = processedContent.replace(processedContent, "Hi")
 			echo "The value of new processedContent is: ${processedContent}"
-			 def filePath = './api.yaml'
+			 def filePath = './wordsmith-kubernetes-files/k8s-manifests/api.yaml'
 				 def fileContent = readFile(filePath).trim()
 
                     // Replace the old value with the new value
@@ -64,7 +64,7 @@ pipeline {
                     // Write the updated content back to the file
                     writeFile(file: filePath, text: updatedContent)
 				 
-			 }
+			 
                 }
           }  
             
