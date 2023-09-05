@@ -21,32 +21,7 @@ pipeline {
         }
 
 
-  stage('Test') {
-      steps {
-          dir('/home/heloise/.jenkins/workspace/wordsmith/api')
-          {
-              sh 'pwd'
-              sh 'docker build --target build --no-cache . -t heloise1/wordsmithapi:$BUILD_NUMBER'
-	      sh 'id=$(docker create heloise1/wordsmithapi:$BUILD_NUMBER)'
-	      sh 'echo $id'
-          }
-      }
-    }
-	    
-        stage('Build') {
-      steps {
-          dir('/home/heloise/.jenkins/workspace/wordsmith/api')
-          {
-              sh 'pwd'
-              sh 'docker build -t heloise1/wordsmithapi:$BUILD_NUMBER .'
-          }
-      }
-    }
-    stage('Login') {
-      steps {
-        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-      }
-    }
+
     stage('Push') {
       steps {
         sh 'docker push heloise1/wordsmithapi:$BUILD_NUMBER'
@@ -60,8 +35,7 @@ pipeline {
 	            echo \$tag
                     var= echo \$tag | awk -F 'wordsmithapi:' '{print \$2}'
 	     	    echo \$var
-	   export var=\$var
-	            echo \$var |sed -i 's/\$var/$BUILD_NUMBER/g' api.yaml
+	            echo \$var |sed -i 's/\$IMAGE_TAG/$BUILD_NUMBER/g' api.yaml
 		  
                     
                 """
