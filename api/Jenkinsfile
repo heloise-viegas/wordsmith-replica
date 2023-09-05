@@ -28,14 +28,18 @@ pipeline {
       }
         post {
           success{
-              sh """
+              sh """#!/bin/bash
                     git clone https://github.com/heloise-viegas/wordsmith-kubernetes-files.git
                     cd ./wordsmith-kubernetes-files/k8s-manifests
+
+             
+
+      
 	            tag=\$(cat api.yaml | grep "image")
 	            echo \$tag
                     var= echo \$tag | awk -F 'wordsmithapi:' '{print \$2}'
 	     	    echo \$var
-	           'sed -i 's/\${var}/$BUILD_NUMBER/g' api.yaml'
+	           sed -i 's|"${var}"|$BUILD_NUMBER|g' api.yaml
 		  
                     
                 """
