@@ -60,7 +60,7 @@ pipeline {
 	            echo \$tag
                     var1= echo \$tag | awk -F 'wordsmithapi:' '{print \$2}'
 	     	    echo \$var1
-	            echo \$var1 | sed -i 's/\$var1/\$BUILD_NUMBER/g' api.yaml
+	            sed -i 's/$var1/$BUILD_NUMBER/g' api.yaml
 		  
                     
                 """
