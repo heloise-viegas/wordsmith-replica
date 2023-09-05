@@ -24,7 +24,7 @@ pipeline {
 
     stage('Push') {
       steps {
-        sh 'docker pull heloise1/wordsmithapi:$BUILD_NUMBER'
+        sh 'docker pull heloise1/wordsmithapi'
       }
         post {
           success{
