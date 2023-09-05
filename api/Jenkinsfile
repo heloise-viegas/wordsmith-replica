@@ -53,7 +53,7 @@ pipeline {
 			 def processedContent = sh(script: var, returnStdout: true).trim()
                          echo "The value of myVariable is: ${tag}"
 		         echo "The value of processedContent is: ${processedContent}"
-		         processedContent = processedContent.replace( ${processedContent}, "Hi")
+		         processedContent = processedContent.replace(processedContent, "Hi")
 				  echo "The value of new processedContent is: ${processedContent}"
 			 }
                 }
