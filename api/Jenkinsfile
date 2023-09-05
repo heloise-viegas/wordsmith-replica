@@ -41,10 +41,7 @@ pipeline {
                 """
           }  
             
-    always {
-      sh 'docker rmi heloise1/wordsmithapi:$BUILD_NUMBER'
-      sh 'docker logout'
-    }
+   
   }
     }
   
