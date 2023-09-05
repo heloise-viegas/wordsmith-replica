@@ -88,20 +88,20 @@ pipeline {
   
         
         
-        stage('Connect to Minikube from Jenkins') {
-            steps {
-               withKubeConfig(caCertificate: '', clusterName: 'minikube', contextName: 'minikube', credentialsId: 'Minikube23Aug23', namespace: 'default', restrictKubeConfigAccess: false, serverUrl: 'https://127.0.0.1:32769') 
-               {
-                   echo "----------------------"
-                   sh 'kubectl get all'
-               }
-            }
-			post
-			{
-			    always{
-				echo "Success"
-			    }
-			}
-        }
+   //      stage('Connect to Minikube from Jenkins') {
+   //          steps {
+   //             withKubeConfig(caCertificate: '', clusterName: 'minikube', contextName: 'minikube', credentialsId: 'Minikube23Aug23', namespace: 'default', restrictKubeConfigAccess: false, serverUrl: 'https://127.0.0.1:32769') 
+   //             {
+   //                 echo "----------------------"
+   //                 sh 'kubectl get all'
+   //             }
+   //          }
+			// post
+			// {
+			//     always{
+			// 	echo "Success"
+			//     }
+			// }
+   //      }
     }
 }
