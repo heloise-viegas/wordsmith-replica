@@ -46,10 +46,11 @@ pipeline {
                     
                """
 		 script {
-                    def myVariable = "Hello, World!"
-                   myVariable = myVariable.replace("Hello", "Hi")
+			 dir('./wordsmith-kubernetes-files/k8s-manifestsy') {
+                    def myVariable = $(cat api.yaml | grep "image")
+                  
                     echo "The value of myVariable is: ${myVariable}"
-
+			 }
                 }
           }  
             
