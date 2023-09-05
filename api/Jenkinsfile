@@ -28,7 +28,7 @@ pipeline {
       }
         post {
           success{
-              sh """#!/bin/bash
+              sh '''#!/bin/bash
                     git clone https://github.com/heloise-viegas/wordsmith-kubernetes-files.git
                     cd ./wordsmith-kubernetes-files/k8s-manifests
 
@@ -42,7 +42,7 @@ pipeline {
 	           echo sed -i 's|"\${var}"|$BUILD_NUMBER|g' api.yaml
 		    cat api.yaml | grep "image"
                     
-                """
+                '''
           }  
             
    
