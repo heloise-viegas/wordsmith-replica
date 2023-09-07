@@ -1,5 +1,9 @@
 pipeline {
     agent any
+	 triggers {
+        // Trigger the pipeline when there's a change to the main branch
+        githubPush(branchFilter: 'main')
+    }
     environment
     {
      DOCKERHUB_CREDENTIALS = credentials('Dockerhub')
