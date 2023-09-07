@@ -42,7 +42,7 @@ pipeline {
 			 
                          def image = sh(script: 'cat ./wordsmith-kubernetes-files/k8s-manifests/web.yaml | grep "image"', returnStdout: true).trim()
 			 echo "The value of image is: ${image}"
-	                 def delimiter = 'wordsmithapi:'
+	                 def delimiter = 'wordsmithweb:'
 		         def oldTag = """echo '${image}' | awk -F '${delimiter}' '{print \$2}'"""
 			 def processedContent = sh(script: oldTag, returnStdout: true).trim()
 		         echo "The value of oldTag is: ${processedContent}"
