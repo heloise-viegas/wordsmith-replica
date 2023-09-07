@@ -71,7 +71,8 @@ pipeline {
                     // Push the changes to the remote repository
                    // sh "cd ${localDirectory} && git push origin main"
 			 withCredentials([gitUsernamePassword(credentialsId: 'hrv-jenkins-pipeline', gitToolName: 'Default')]) {
-                    sh "git push https://github.com/heloise-viegas/wordsmith-kubernetes-files.git main"
+                    sh "cd ${localDirectory} && git push https://github.com/heloise-viegas/wordsmith-kubernetes-files.git main"
+		   //sh "cd ${localDirectory} && git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/your-username/your-repo.git master"
                 }
 			 // sh "git add web.yaml"
 			 // sh "git commit -m 'Updated Image tag from Jenkins Pipeline'"
