@@ -20,7 +20,7 @@ pipeline {
             }
         }
 
-				     stage('Test') {
+      stage('Test') {
       steps {
           dir('/home/heloise/.jenkins/workspace/wordsmith/api')
           {
@@ -29,29 +29,30 @@ pipeline {
 	      sh 'id=$(docker create heloise1/wordsmithapi:$BUILD_NUMBER)'
 	      sh 'echo $id'
           }
-      }
-    }
+            }
+                  }
 	    
-        stage('Build') {
+        stage('Build Image') {
       steps {
           dir('/home/heloise/.jenkins/workspace/wordsmith/api')
           {
               sh 'pwd'
               sh 'docker build -t heloise1/wordsmithapi:$BUILD_NUMBER .'
           }
-      }
-    }
-    stage('Login') {
+            }
+                }
+	    
+    stage('Login to DockerHub') {
       steps {
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-      }
-    }
+            }
+                    }
 	
 
-    stage('Push') {
+    stage('Push Image & Update tag in Git Repo') {
       steps {
         sh 'docker push heloise1/wordsmithapi:$BUILD_NUMBER'
-      }
+             }
         post {
           success{
       //         sh """#!/bin/bash
@@ -61,7 +62,6 @@ pipeline {
 		 script {
 			  // Define the repository URL and local directory
 	                def gitRepoURL = 'https://github.com/heloise-viegas/wordsmith-kubernetes-files.git'
-	                def localDirectory = './wordsmith-kubernetes-files/k8s-manifests'
 	                // Clone the Git repository
 	                sh "git clone ${gitRepoURL}"
                          def image = sh(script: 'cat ./wordsmith-kubernetes-files/k8s-manifests/api.yaml | grep "image"', returnStdout: true).trim()
@@ -82,14 +82,14 @@ pipeline {
                     def updatedFileContent = sh(script: "cat ${filePath}", returnStdout: true).trim()
                     echo "Updated file content:"
                     echo updatedFileContent
+
+		   def localDirectory = './wordsmith-kubernetes-files/k8s-manifests'
 			  // Stage and commit the changes
                     sh "cd ${localDirectory} && git add api.yaml"
                     sh "cd ${localDirectory} && git commit -m 'Image tag from Jenkins Pipeline'"   
                     // Push the changes to the remote repository
-                   // sh "cd ${localDirectory} && git push origin main"
-			 withCredentials([gitUsernamePassword(credentialsId: 'hrv-jenkins-pipeline', gitToolName: 'Default')]) {
+		   withCredentials([gitUsernamePassword(credentialsId: 'hrv-jenkins-pipeline', gitToolName: 'Default')]) {
                     sh "cd ${localDirectory} && git push https://github.com/heloise-viegas/wordsmith-kubernetes-files.git main"
-		   //sh "cd ${localDirectory} && git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/your-username/your-repo.git master"
                 }
 			 
 			 
