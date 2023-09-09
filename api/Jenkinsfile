@@ -1,0 +1,97 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('Dockerhub')
+        IMAGE_TAG = "$BUILD_NUMBER"
+        DOCKERFILE_DIR ='/home/heloise/.jenkins/workspace/wordsmith/api'
+        TEST_DIR ='/home/heloise/.jenkins/workspace/wordsmith/api/test'
+        GIT_REPO_URL = 'https://github.com/heloise-viegas/wordsmith-kubernetes-files.git'
+        K8S_MANIFESTS_DIR = './wordsmith-kubernetes-files/k8s-manifests'
+        API_YAML_FILE = "${K8S_MANIFESTS_DIR}/api.yaml"
+        GIT_USER_EMAIL = 'heloisereinaviegas@gmail.com'
+        GIT_USER_NAME = 'heloise-viegas'
+    }
+
+    stages {
+        stage('Clone') {
+            steps {
+                cleanWs()
+                checkout scm
+            }
+        }
+        stage('Test') {
+            steps {
+              dir(TEST_DIR){
+                // Add your test commands here.
+                // For example, if you're using a testing framework like JUnit:
+                sh 'mvn test'  // Replace with your actual test command.
+              }
+            }
+        }
+        stage('Build Image') {
+            steps {
+              catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                dir(DOCKERFILE_DIR) {
+                   sh "docker build --tag heloise1/wordsmithapi:${IMAGE_TAG} ."
+                    }
+                }
+            }
+        }
+
+        stage('Login and Push to DockerHub') {
+           when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'Dockerhub', usernameVariable: 'DOCKERHUB_CREDENTIALS_USR', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW')]) {
+                        sh "echo \${DOCKERHUB_CREDENTIALS_PSW} | docker login -u \${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
+                        sh "docker push heloise1/wordsmithapi:${IMAGE_TAG}"
+                    }
+                }
+            }
+        }
+
+        stage('Update tag in Git Repo') {
+           when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
+            steps {
+                script {
+                        withCredentials([gitUsernamePassword(credentialsId: 'hrv-jenkins-pipeline', gitToolName: 'Default')]) {
+                        sh "git config user.email '${GIT_USER_EMAIL}'"
+                        sh "git config user.name '${GIT_USER_NAME}'"
+
+                        sh "git clone ${GIT_REPO_URL}"
+                        
+                        def image = sh(script: "cat ${API_YAML_FILE} | grep 'image'", returnStdout: true).trim()
+                        def oldTag = image.replaceAll('.*wordsmithapi:', '')
+
+                        echo "Old image tag: ${oldTag}"
+                        echo "New image tag: ${BUILD_NUMBER}"
+
+                        def filePath = ${API_YAML_FILE}
+                        def fileContent = readFile(filePath).trim()
+
+                        def updatedContent = fileContent.replace(oldTag, env.BUILD_NUMBER)
+                        writeFile(file: filePath, text: updatedContent)
+
+                        def localDirectory = ${K8S_MANIFESTS_DIR}
+                        sh "cd ${localDirectory} && git add api.yaml"
+                        sh "cd ${localDirectory} && git commit -m 'Image tag from Jenkins Pipeline'"
+                        sh "cd ${localDirectory} && git push ${GIT_REPO_URL} main"
+                    }
+
+             
+            }
+        }
+    }
+
+    post {
+        success {
+            sh "docker rmi heloise1/wordsmithapi:${IMAGE_TAG}"
+            sh 'docker logout'
+        }
+    }
+}
