@@ -75,13 +75,13 @@ pipeline {
                         def filePath = API_YAML_FILE
                         def fileContent = readFile(filePath).trim()
 
-                        // def updatedContent = fileContent.replace(oldTag, env.BUILD_NUMBER)
-                        // writeFile(file: filePath, text: updatedContent)
+                        def updatedContent = fileContent.replace(oldTag, env.BUILD_NUMBER)
+                        writeFile(file: filePath, text: updatedContent)
 
-                        // def localDirectory = ${K8S_MANIFESTS_DIR}
-                        // sh "cd ${localDirectory} && git add api.yaml"
-                        // sh "cd ${localDirectory} && git commit -m 'Image tag from Jenkins Pipeline'"
-                        // sh "cd ${localDirectory} && git push ${GIT_REPO_URL} main"
+                        def localDirectory = ${K8S_MANIFESTS_DIR}
+                        sh "cd ${localDirectory} && git add api.yaml"
+                        sh "cd ${localDirectory} && git commit -m 'Image tag from Jenkins Pipeline'"
+                        sh "cd ${localDirectory} && git push ${GIT_REPO_URL} main"
                     }
 
              
