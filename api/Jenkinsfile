@@ -51,6 +51,13 @@ pipeline {
                     }
                 }
             }
+             post {
+                    success {
+                        sh "docker rmi heloise1/wordsmithapi:${IMAGE_TAG}"
+                        sh 'docker logout'
+                    }
+                }
+            
         }
 
         stage('Update tag in Git Repo') {
@@ -86,13 +93,9 @@ pipeline {
              
             }
         }
+            
     }
 
-    post {
-        success {
-            sh "docker rmi heloise1/wordsmithapi:${IMAGE_TAG}"
-            sh 'docker logout'
-        }
-    }
+   
 }
 }
