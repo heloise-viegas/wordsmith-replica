@@ -14,13 +14,7 @@ pipeline {
     }
 
     stages {
-        // stage('Clone') {
-        //     steps {
-        //         cleanWs()
-        //         checkout scm
-        //     }
-        // }
-        stage('Test') {
+              stage('Test') {
             steps {
               dir(TEST_DIR){
                 // Add your test commands here.
@@ -29,36 +23,36 @@ pipeline {
               }
             }
         }
-        stage('Build Image') {
-            steps {
-              catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                dir(DOCKERFILE_DIR) {
-                   sh "docker build --tag heloise1/wordsmithapi:${IMAGE_TAG} ."
-                    }
-                }
-            }
-        }
+        // stage('Build Image') {
+        //     steps {
+        //       catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+        //         dir(DOCKERFILE_DIR) {
+        //            sh "docker build --tag heloise1/wordsmithapi:${IMAGE_TAG} ."
+        //             }
+        //         }
+        //     }
+        // }
 
-        stage('Login and Push to DockerHub') {
-           when {
-                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
-            }
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'Dockerhub', usernameVariable: 'DOCKERHUB_CREDENTIALS_USR', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW')]) {
-                        sh "echo \${DOCKERHUB_CREDENTIALS_PSW} | docker login -u \${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
-                        sh "docker push heloise1/wordsmithapi:${IMAGE_TAG}"
-                    }
-                }
-            }
-             post {
-                    success {
-                        sh "docker rmi heloise1/wordsmithapi:${IMAGE_TAG}"
-                        sh 'docker logout'
-                    }
-                }
+        // stage('Login and Push to DockerHub') {
+        //    when {
+        //         expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+        //     }
+        //     steps {
+        //         script {
+        //             withCredentials([usernamePassword(credentialsId: 'Dockerhub', usernameVariable: 'DOCKERHUB_CREDENTIALS_USR', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW')]) {
+        //                 sh "echo \${DOCKERHUB_CREDENTIALS_PSW} | docker login -u \${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
+        //                 sh "docker push heloise1/wordsmithapi:${IMAGE_TAG}"
+        //             }
+        //         }
+        //     }
+        //      post {
+        //             success {
+        //                 sh "docker rmi heloise1/wordsmithapi:${IMAGE_TAG}"
+        //                 sh 'docker logout'
+        //             }
+        //         }
             
-        }
+        // }
 
         stage('Update tag in Git Repo') {
            when {
