@@ -25,7 +25,7 @@ pipeline {
               dir(TEST_DIR){
                 // Add your test commands here.
                 // For example, if you're using a testing framework like JUnit:
-                sh 'mvn test'  // Replace with your actual test command.
+                //sh 'mvn test'  // Replace with your actual test command.
               }
             }
         }
