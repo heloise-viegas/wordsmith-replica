@@ -72,7 +72,7 @@ pipeline {
                         echo "Old image tag: ${oldTag}"
                         echo "New image tag: ${BUILD_NUMBER}"
 
-                        def filePath = \${API_YAML_FILE}
+                        def filePath = API_YAML_FILE
                         def fileContent = readFile(filePath).trim()
 
                         // def updatedContent = fileContent.replace(oldTag, env.BUILD_NUMBER)
