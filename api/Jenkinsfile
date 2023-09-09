@@ -14,12 +14,12 @@ pipeline {
     }
 
     stages {
-        stage('Clone') {
-            steps {
-                cleanWs()
-                checkout scm
-            }
-        }
+        // stage('Clone') {
+        //     steps {
+        //         cleanWs()
+        //         checkout scm
+        //     }
+        // }
         stage('Test') {
             steps {
               dir(TEST_DIR){
